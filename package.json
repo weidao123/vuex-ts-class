@@ -1,10 +1,15 @@
 {
   "name": "vuex-ts-class",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "测试中",
   "keywords": ["vuex", "vuex-ts", "vuex-ts-class", "class", "vuex-class"],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "homepage": "https://github.com/15523257452/vuex-ts-class",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/15523257452/vuex-ts-class"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc"
