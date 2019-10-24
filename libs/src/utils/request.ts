@@ -55,11 +55,20 @@ class XMLHttp implements XMLHttpRequestInterface {
                 resolve(response);
                 return;
             } else {
-                if (this.xhr.readyState === 4) reject();
+                if (this.xhr.readyState === 4) {
+                    //请求成功 调用afterRequest 生命周期方法
+                    requestContext.requestFail && requestContext.requestFail(this.xhr);
+                    reject();
+                }
             }
         };
 
+        //判断有没有设置全局的请求参数
         let params: any = requestOptions.body;
+        let globalParams = requestContext.getGlobalParams();
+        if(typeof globalParams === 'object' && globalParams) params = Object.assign({}, globalParams, params);
+
+        //设置非GET参数 如果不是GET请求 并且请求的参数是object 将请求参数转换为json字符串
         if (typeof params === 'object' && requestOptions.method.toLocaleUpperCase() !== RequestMethod.GET) {
             params = JSON.stringify(params);
         }
