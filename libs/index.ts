@@ -7,6 +7,8 @@ import {
     GetterMethod
 } from "./src/decorator";
 import {Service} from "./src/service";
+import {requestContext as RequestContext} from "./src/context/RequestContext";
+import {Request} from "./src/decorator";
 
 export {
     VuexModule,
@@ -15,7 +17,9 @@ export {
     MutationsMapping,
     MutationMethod,
     GetterMethod,
-    Service
+    Service,
+    RequestContext,
+    Request
 }
 
 export default Service;

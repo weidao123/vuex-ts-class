@@ -1,8 +1,14 @@
 {
   "name": "vuex-ts-class",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "测试中",
-  "keywords": ["vuex", "vuex-ts", "vuex-ts-class", "class", "vuex-class"],
+  "keywords": [
+    "vuex",
+    "vuex-ts",
+    "vuex-ts-class",
+    "class",
+    "vuex-class"
+  ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "homepage": "https://github.com/15523257452/vuex-ts-class",
@@ -17,6 +23,7 @@
   "author": "2209697714@qq.com",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.19.0",
     "vue": "^2.6.10",
     "vuex": "^3.1.1"
   }

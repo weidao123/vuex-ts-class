@@ -1,4 +1,5 @@
 import { VuexModuleConfig, VuexModule } from "../interface";
+import { RequestParams } from "../interface/Request";
 /**
  * 装饰一个方法为action
  * @param target
@@ -40,3 +41,9 @@ export declare function ActionMapping(target: any): any;
  * @constructor
  */
 export declare function MutationsMapping(target: any): any;
+/**
+ * 请求的装饰器
+ * @param requestParams
+ * @constructor
+ */
+export declare function Request(requestParams: RequestParams): (target: any, name: string, desc: any) => any;

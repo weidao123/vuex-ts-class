@@ -1,4 +1,6 @@
 import {VuexModuleConfig, VuexModule} from "../interface";
+import {RequestParams} from "../interface/Request";
+import {HttpService, request} from "./utils/request";
 
 /**
  * 装饰一个方法为action
@@ -108,4 +110,17 @@ export function MutationsMapping(target: any) {
         }
     });
     return newObj;
+}
+
+/**
+ * 请求的装饰器
+ * @param requestParams
+ * @constructor
+ */
+export function Request(requestParams: RequestParams) {
+    requestParams.method = requestParams.method || 'GET';
+    return function(target: any, name: string, desc: any) {
+        desc.value = desc.value.bind({request: async (body: object = {}) => await request(requestParams, body)});
+        return desc;
+    };
 }
