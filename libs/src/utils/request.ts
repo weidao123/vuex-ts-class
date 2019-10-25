@@ -79,13 +79,20 @@ class XMLHttp implements XMLHttpRequestInterface {
 
         //判断有没有设置全局的请求参数
         let params: any = requestOptions.body;
-        let globalParams: object | null = requestContext.getGlobalParams();
+        let globalParams: object | null | any = requestContext.getGlobalParams();
 
         if(typeof globalParams === 'object' && globalParams) params = Object.assign({}, globalParams, params);
 
         //设置非GET参数 如果不是GET请求 并且请求的参数是object 将请求参数转换为json字符串
         if (typeof params === 'object' && requestOptions.method.toLocaleUpperCase() !== RequestMethod.GET) {
-            params = JSON.stringify(params);
+            if(params.append && params.entries && params.delete && params.get) {
+
+                //传入 FormData 将全局的参数添加到FormData
+                if(globalParams) Object.keys(globalParams).forEach((key: string) => params.append(key, globalParams[key]));
+
+            } else {
+                params = JSON.stringify(params);
+            }
         }
 
         //设置GET参数
