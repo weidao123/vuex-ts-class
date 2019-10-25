@@ -9,6 +9,7 @@ import {
 import {Service} from "./src/service";
 import {requestContext as RequestContext} from "./src/context/RequestContext";
 import {Request} from "./src/decorator";
+import {RequestMethod} from "./enum/Request";
 
 export {
     VuexModule,
@@ -19,7 +20,8 @@ export {
     GetterMethod,
     Service,
     RequestContext,
-    Request
+    Request,
+    RequestMethod
 }
 
 export default Service;

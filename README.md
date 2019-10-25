@@ -1,9 +1,10 @@
-># 使用说明：
+>>
+>### 使用说明：
 >```
 > npm nstall vue-ts-class
 > import {Service} from 'vue-ts-class'
 >
->//配置项和vuex原来的一样
+>//配置项和
 >const service = new Service({
 >     state: {count: 40},
 >     actions: {
@@ -21,29 +22,7 @@
 >  export default service.createStore();
 >```
 
-># 装饰器：
->```
->    //装饰一类模块为vuex模块
->   @VuexModule()
->
->   //Mutation方法装饰器 配合VuexModule使用
->  @MutationMethod
->
->    //Getter方法装饰器 配合VuexModule使用
->    @GetterMethod
->
->    //Actions方法装饰器 配合VuexModule使用
->    @ActionMethod
->
->    //类装饰器 vuex的action
->    @ActionMapping    
->
->    //类装饰器 vuex的mutation
->    @MutationsMapping
->
->```
-
-># 示列：
+>### 示列：
 >```
 > @VuexModule({name: "User"})
 >  export class UserModule {
@@ -52,15 +31,46 @@
 >    public age: number = 200;
 >
 >
->    @SetMutations
+>    @MutationMethod
 >    public setName(state: any, params: number): void {
 >        state.name = "mutations setName" + params;
 >    }
 >
->    @SetAction
+>    @ActionMethod
 >    public getName({commit}: any, params: number): void {
 >        console.log("action getName" + params);
 >        commit("setName", params)
 >    }
+>
+>    @Request({url: "/test", method: RequestMethod.GET});
+>    @ActionMethod
+>    public async testAsync({commit}: any, params: number): void {
+>        const result = await this.request({username: '测试', id: 1});
+>    }
 > }
 >```
+
+>### 装饰器：
+>
+`//装饰一个方法为action`
+`export declare function ActionMethod(target: any, name: string, desc: any): any;`
+
+`//装饰一个方法为mutation`
+`export declare function MutationMethod(target: any, name: string, desc: any): any;`
+
+`//装饰一个方法为getters`
+`export declare function GetterMethod(target: any, name: string, desc: any): any;`
+
+`//装饰一个类为一个vuex的模块`
+`export declare function VuexModule(vuexModuleConfig?: VuexModuleConfig): (target: any) => VuexModule;`
+
+`//装饰一个类为Action`
+`export declare function ActionMapping(target: any): any;`
+
+`//装饰一个类为mutations`
+`export declare function MutationsMapping(target: any): any;`
+
+`//请求的装饰器`
+`export declare function Request(requestParams: RequestOptions): (target: any, name: string, desc: any) => any;`
+
+>

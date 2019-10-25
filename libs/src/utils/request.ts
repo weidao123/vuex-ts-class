@@ -7,6 +7,7 @@ import {
 } from "../../interface/Request";
 import {RequestMethod} from "../../enum/Request";
 import {requestContext} from "../context/RequestContext";
+import {Header} from "../../interface/RequestContext";
 
 class XMLHttp implements XMLHttpRequestInterface {
 
@@ -19,8 +20,10 @@ class XMLHttp implements XMLHttpRequestInterface {
      * @param url
      * @param method
      * @param body
+     * @param timeout
+     * @param header
      */
-    public async initXMLHttp(url: string, method: RequestMethodType, body: any): Promise<Response> {
+    public async initXMLHttp(url: string, method: RequestMethodType, body: any, timeout: number | undefined, header: Header | undefined): Promise<Response> {
 
         if (XMLHttpRequest) {
             this.xhr = new XMLHttpRequest();
@@ -30,18 +33,28 @@ class XMLHttp implements XMLHttpRequestInterface {
 
         if (!this.xhr) throw new Error("XMLHttp initialization failed");
 
-        return new Promise(this.xhrPromise.bind(this, {url, method, body}));
+        return new Promise(this.xhrPromise.bind(this, {url, method, body, timeout, header}));
         //@ts-ignore
     }
 
     /**
      * 异步等待XMLHttpRequest的请求成功回调
-     * 相关的生命周期方法也在这里执行
+     * 相关的生命周期方法也在这里被调用
+     * requestContext的一些配置新也在这里面获取
      * @param requestOptions
      * @param resolve
      * @param reject
      */
     public xhrPromise(requestOptions: RequestOptions, resolve: Function, reject: Function): void {
+
+        //获取超时时间
+        let timeoutTime: number = requestOptions.timeout || requestContext.getTimeout();
+
+        //部分浏览器不支持timout 待后期使用setTimeout 方法模拟实现
+        if(this.xhr.timeout) this.xhr.timeout = timeoutTime;
+        if(this.xhr.ontimeout) this.xhr.ontimeout = requestContext.onTimeout;
+
+        this.xhr.addEventListener("error",  requestContext.onError, false);
 
         //开始请求 beforeRequest 生命周期方法
         requestContext.afterRequest && requestContext.beforeRequest(requestOptions);
@@ -50,6 +63,7 @@ class XMLHttp implements XMLHttpRequestInterface {
             const state: boolean = await this.onReadyStateChange();
             if (state) {
                 const response: Response = JSON.parse(this.xhr.responseText);
+
                 //请求成功 调用afterRequest 生命周期方法
                 requestContext.afterRequest && requestContext.afterRequest(response);
                 resolve(response);
@@ -65,7 +79,8 @@ class XMLHttp implements XMLHttpRequestInterface {
 
         //判断有没有设置全局的请求参数
         let params: any = requestOptions.body;
-        let globalParams = requestContext.getGlobalParams();
+        let globalParams: object | null = requestContext.getGlobalParams();
+
         if(typeof globalParams === 'object' && globalParams) params = Object.assign({}, globalParams, params);
 
         //设置非GET参数 如果不是GET请求 并且请求的参数是object 将请求参数转换为json字符串
@@ -74,7 +89,7 @@ class XMLHttp implements XMLHttpRequestInterface {
         }
 
         //设置GET参数
-        if (requestOptions.method.toLocaleUpperCase() === "GET") {
+        if (requestOptions.method.toLocaleUpperCase() === RequestMethod.GET) {
             let urlParams: string = "";
             let keys: string[] = Object.keys(params);
             keys.forEach((key: string, index: number) => urlParams += `${key}=${params[key]}${index + 1 !== keys.length ? '&' : ''}`);
@@ -87,7 +102,18 @@ class XMLHttp implements XMLHttpRequestInterface {
             requestOptions.url = requestContext.getBaseURL() + requestOptions.url;
         }
 
+        //先打开连接
         this.xhr.open(requestOptions.method, requestOptions.url, true);
+
+        //设置请求
+        let requestHeaders: any = requestContext.getRequestHeaders() || {};
+        let currentHeader: any = requestOptions.header || {};
+        let headers: any = Object.assign({}, requestHeaders, currentHeader);
+        if(headers) {
+            let header: string[] = Object.keys(headers);
+            header.forEach((key: string) => this.xhr.setRequestHeader(key, headers[key]))
+        }
+
         this.xhr.send(params);
     }
 
@@ -98,7 +124,7 @@ class XMLHttp implements XMLHttpRequestInterface {
 }
 
 /**
- * 可传入的参数配置
+ * 外部可传入的参数配置
  * 其他的参数待配置
  */
 export class HttpService extends XMLHttp implements RequestParamsConfig {
@@ -108,6 +134,8 @@ export class HttpService extends XMLHttp implements RequestParamsConfig {
         this.url = requestOptions.url;
         this.method = requestOptions.method;
         this.body = requestOptions.body;
+        this.timeout = requestOptions.timeout;
+        this.header = requestOptions.header;
     }
 
     public readonly url: string;
@@ -116,17 +144,21 @@ export class HttpService extends XMLHttp implements RequestParamsConfig {
 
     public readonly body: any;
 
+    public readonly timeout: number | undefined;
+
+    public readonly header: Header | undefined;
+
     public async request(): Promise<Response> {
-        return await this.initXMLHttp(this.url, this.method, this.body);
+        return await this.initXMLHttp(this.url, this.method, this.body, this.timeout, this.header);
     }
 }
 
 /**
  * 提供给Request装饰器的方法 也可单独使用
- * @param requestParams
- * @param body
+ * @param requestParams 装饰器的初使参数
+ * @param body 请求题
  */
-export async function request(requestParams: RequestParams, body: any) {
+export async function request(requestParams: RequestOptions, body: any) {
     requestParams.body = body;
     const httpService = new HttpService(requestParams);
     return await httpService.request();

@@ -1,3 +1,4 @@
+import {Header} from "./RequestContext";
 
 export type RequestMethodType = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
@@ -16,7 +17,7 @@ export interface RequestParams extends RequestOptions{
 }
 
 /**
- * 请求的参数
+ * 请求的参数的配置项
  */
 export interface RequestOptions {
     /**
@@ -33,6 +34,16 @@ export interface RequestOptions {
      * 请求的内容参数
      */
     body?: any
+
+    /**
+     * 设置单次的请求头
+     */
+    header?: Header
+
+    /**
+     * 设置超时时间
+     */
+    timeout?: number | undefined
 }
 
 /**
@@ -62,8 +73,10 @@ export interface XMLHttpRequestInterface {
      * @param url
      * @param method
      * @param body
+     * @param timeout
+     * @param header
      */
-    initXMLHttp(url: string, method: RequestMethodType, body: any): Promise<Response>
+    initXMLHttp(url: string, method: RequestMethodType, body: any, timeout: number, header: Header): Promise<Response>
 
     /**
      * 用于异步等待XMLHttpRequest的执行结果

@@ -1,5 +1,5 @@
 import {VuexModuleConfig, VuexModule} from "../interface";
-import {RequestParams} from "../interface/Request";
+import {RequestOptions, RequestParams} from "../interface/Request";
 import {HttpService, request} from "./utils/request";
 
 /**
@@ -117,7 +117,7 @@ export function MutationsMapping(target: any) {
  * @param requestParams
  * @constructor
  */
-export function Request(requestParams: RequestParams) {
+export function Request(requestParams: RequestOptions) {
     requestParams.method = requestParams.method || 'GET';
     return function(target: any, name: string, desc: any) {
         desc.value = desc.value.bind({request: async (body: object = {}) => await request(requestParams, body)});

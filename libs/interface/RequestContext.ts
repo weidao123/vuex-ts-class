@@ -1,9 +1,32 @@
 import {RequestOptions, Response} from "./Request";
 
-export interface RequestContext {
-    baseURL: string
+export interface Header {
+    [key: string]: string | number
+}
 
+/**
+ * request全局的上下文配置信息
+ */
+export interface RequestContext {
+    /**
+     * 根路径
+     */
+    baseURL: string | null
+
+    /**
+     * 全局公共参数
+     */
     globalParams: object | null
+
+    /**
+     * 请求头
+     */
+    requestHeaders: object | null
+
+    /**
+     * 超时时间
+     */
+    timeout: number
 
     /**
      * 开始请求之前
@@ -29,4 +52,16 @@ export interface RequestContext {
     setGlobalParams(params: object): void
 
     getGlobalParams(): object | null
+
+    getRequestHeaders(): object
+
+    setRequestHeaders(header: Header): void
+
+    getTimeout(): number
+
+    setTimeout(timeout: number): void
+
+    onTimeout(): any
+
+    onError(): any
 }

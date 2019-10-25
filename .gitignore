@@ -1,5 +1,5 @@
 /node_modules/
-/dist/
+/vuex-ts-class/
 *.log
 .idea
 .npmignore

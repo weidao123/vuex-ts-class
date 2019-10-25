@@ -1,7 +1,7 @@
 {
   "name": "vuex-ts-class",
-  "version": "1.0.5",
-  "description": "测试中",
+  "version": "1.0.6",
+  "description": "Provides VUex Typescript writing method and built-in encapsulation network request method, which can be used together",
   "keywords": [
     "vuex",
     "vuex-ts",
@@ -9,7 +9,7 @@
     "class",
     "vuex-class"
   ],
-  "main": "./dist/index.js",
+  "main": "vuex-ts-class/index.js",
   "types": "./dist/index.d.ts",
   "homepage": "https://github.com/15523257452/vuex-ts-class",
   "repository": {
