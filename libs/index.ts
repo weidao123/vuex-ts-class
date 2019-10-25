@@ -5,11 +5,12 @@ import {
     MutationsMapping,
     MutationMethod,
     GetterMethod
-} from "./src/decorator";
-import {Service} from "./src/service";
+} from "./src/core/decorator";
+import {Service} from "./src/core/service";
 import {requestContext as RequestContext} from "./src/context/RequestContext";
-import {Request} from "./src/decorator";
+import {Request} from "./src/core/decorator";
 import {RequestMethod} from "./enum/Request";
+import {VuexModuleClass} from "./src/core/vuex";
 
 export {
     VuexModule,
@@ -21,7 +22,8 @@ export {
     Service,
     RequestContext,
     Request,
-    RequestMethod
+    RequestMethod,
+    VuexModuleClass
 }
 
 export default Service;

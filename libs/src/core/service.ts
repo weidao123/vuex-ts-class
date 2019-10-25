@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex, {Store} from 'vuex';
-import {VuexModule, VuexStoreConfig} from "../interface";
+import {VuexModule, VuexStoreConfig} from "../../interface";
 
 Vue.use(Vuex);
 

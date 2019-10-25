@@ -1,6 +1,6 @@
-import {VuexModuleConfig, VuexModule} from "../interface";
-import {RequestOptions, RequestParams} from "../interface/Request";
-import {HttpService, request} from "./utils/request";
+import {VuexModuleConfig, VuexModule} from "../../interface";
+import {RequestOptions, RequestParams} from "../../interface/Request";
+import {HttpService, request} from "../utils/request";
 
 /**
  * 装饰一个方法为action
