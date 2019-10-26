@@ -1,6 +1,6 @@
 {
   "name": "vuex-ts-class",
-  "version": "1.0.751",
+  "version": "1.0.77",
   "description": "Provides VUex Typescript writing method and built-in encapsulation network request method, which can be used together",
   "keywords": [
     "vuex",

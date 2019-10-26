@@ -63,7 +63,6 @@ export class UserModule {
 }
 
 //通过继承VuexModuleClass 来生成一个vuex模块
-@VuexModule({name: 'User'})
 class UserModule extends VuexModuleClass {
    constructor() {
         super("Order");
