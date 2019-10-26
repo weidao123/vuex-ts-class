@@ -54,6 +54,9 @@ class XMLHttp implements XMLHttpRequestInterface {
         if(this.xhr.timeout) this.xhr.timeout = timeoutTime;
         if(this.xhr.ontimeout) this.xhr.ontimeout = requestContext.onTimeout;
 
+        //上传进度
+        this.xhr.upload.onprogress = requestContext.onprogress;
+
         this.xhr.addEventListener("error",  requestContext.onError, false);
 
         //开始请求 beforeRequest 生命周期方法
@@ -80,16 +83,15 @@ class XMLHttp implements XMLHttpRequestInterface {
         //判断有没有设置全局的请求参数
         let params: any = requestOptions.body;
         let globalParams: object | null | any = requestContext.getGlobalParams();
+        let isFormData = params.append && params.entries && params.delete && params.get;
 
         if(typeof globalParams === 'object' && globalParams) params = Object.assign({}, globalParams, params);
 
         //设置非GET参数 如果不是GET请求 并且请求的参数是object 将请求参数转换为json字符串
         if (typeof params === 'object' && requestOptions.method.toLocaleUpperCase() !== RequestMethod.GET) {
-            if(params.append && params.entries && params.delete && params.get) {
-
+            if(isFormData) {
                 //传入 FormData 将全局的参数添加到FormData
                 if(globalParams) Object.keys(globalParams).forEach((key: string) => params.append(key, globalParams[key]));
-
             } else {
                 params = JSON.stringify(params);
             }
@@ -116,7 +118,9 @@ class XMLHttp implements XMLHttpRequestInterface {
         let requestHeaders: any = requestContext.getRequestHeaders() || {};
         let currentHeader: any = requestOptions.header || {};
         let headers: any = Object.assign({}, requestHeaders, currentHeader);
-        if(headers) {
+
+        //如果上传的FormData 就不去设置请求头 浏览器会自动识别
+        if(headers && !isFormData) {
             let header: string[] = Object.keys(headers);
             header.forEach((key: string) => this.xhr.setRequestHeader(key, headers[key]))
         }

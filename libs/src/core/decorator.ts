@@ -42,7 +42,7 @@ export function GetterMethod(target: any, name: string, desc: any) {
  * 装饰一个类为一个vuex的模块
  * @constructor
  */
-export function VuexModule(vuexModuleConfig?: VuexModuleConfig): (target: any) => VuexModule {
+export function VuexModule(vuexModuleConfig?: VuexModuleConfig): any {
     return function(target: any): VuexModule {
         const MODULES: any = {};
         vuexModuleConfig = vuexModuleConfig || {};

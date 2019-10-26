@@ -115,6 +115,13 @@ class RequestContextImpl implements RequestContext {
      * 请求出错
      */
     public onError(): any {}
+
+    /**
+     * 上传的实时进度
+     */
+    public onprogress(params: any): any {
+
+    }
 }
 
 export const requestContext: RequestContext = new RequestContextImpl();

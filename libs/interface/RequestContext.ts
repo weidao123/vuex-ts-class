@@ -64,4 +64,6 @@ export interface RequestContext {
     onTimeout(): any
 
     onError(): any
+
+    onprogress(params: any): any
 }

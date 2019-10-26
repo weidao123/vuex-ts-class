@@ -1,76 +1,79 @@
->>
->### 使用说明：
->```
-> npm nstall vue-ts-class
-> import {Service} from 'vue-ts-class'
->
->//配置项和
->const service = new Service({
->     state: {count: 40},
->     actions: {
->         ...MainAction
->     },
->     mutations: {
->         ...MainMutations
->     }
->  });
->
->  //组册一个模块
->  service.regsiterModule(UserModule);
->
->  //导出vuex的实列
->  export default service.createStore();
->```
 
->### 示列：
->```
-> @VuexModule({name: "User"})
->  export class UserModule {
->
->    public name: string = "hhh";
->    public age: number = 200;
->
->
->    @MutationMethod
->    public setName(state: any, params: number): void {
->        state.name = "mutations setName" + params;
->    }
->
->    @ActionMethod
->    public getName({commit}: any, params: number): void {
->        console.log("action getName" + params);
->        commit("setName", params)
->    }
->
->    @Request({url: "/test", method: RequestMethod.GET});
->    @ActionMethod
->    public async testAsync({commit}: any, params: number): void {
->        const result = await this.request({username: '测试', id: 1});
->    }
-> }
->```
+>### 简介：
+ * vuex-ts-class 是对Vuex的一层包装，使用Class类的写法来使用Vuex
+ * vuex-ts-class 拥有更好的开发体验，模块化更加的清晰
+ * 建议把 vuex-ts-class 当成一个service层来使用
+ * 内置封装了 request 方法， 基于 XMLHttpRequest
+ * 对外提供了 RequestContext 来做一些全局的配置
+ *      例如： 
+            请求头部: RequestContext.setRequestHeaders
+            全局的参数: RequestContext.setGlobalParams
+            以及一些相关的生命周期方法等等
+                
+>### 使用:
+* `yarn add vuex-ts-class`
 
->### 装饰器：
->
-`//装饰一个方法为action`
-`export declare function ActionMethod(target: any, name: string, desc: any): any;`
+* `import {Service, RequestContext} from 'yarn add vuex-ts-class'`
 
-`//装饰一个方法为mutation`
-`export declare function MutationMethod(target: any, name: string, desc: any): any;`
+    ```typescript
+  const service = new Service({
+      state: {count: 40},
+      actions: {
+          ...MainAction
+      },
+      mutations: {
+          ...MainMutations
+      }
+  });
+  
+  //设置全局请求头部
+  RequestContext.setRequestHeaders({"Content-Type": "application/json;charset=UTF-8"});
+  
+  //注册一个模块
+  service.registerModule(Order);
+  service.registerModule(UserModule);
+  
+  //导出vuex的实例
+  export default service.createStore();
 
-`//装饰一个方法为getters`
-`export declare function GetterMethod(target: any, name: string, desc: any): any;`
+>#### 模块：:
+```typescript
+import {MutationMethod, VuexModule, ActionMethod, Request, VuexModuleClass} from 'vuex-ts-class';
 
-`//装饰一个类为一个vuex的模块`
-`export declare function VuexModule(vuexModuleConfig?: VuexModuleConfig): (target: any) => VuexModule;`
+//使用VuexModule装饰器来生成一个vuex模块
+@VuexModule({name: 'User'})
+export class UserModule {
 
-`//装饰一个类为Action`
-`export declare function ActionMapping(target: any): any;`
+    public name: string = 'hhh';
 
-`//装饰一个类为mutations`
-`export declare function MutationsMapping(target: any): any;`
+    @MutationMethod
+    public setName(state: any, params: number): void {
+        state.name = 'mutations setName' + params;
+    }
 
-`//请求的装饰器`
-`export declare function Request(requestParams: RequestOptions): (target: any, name: string, desc: any) => any;`
+    @ActionMethod
+    @Request({url: '/test/url', method: 'POST'})
+    public async getName({commit}: any, params: number): Promise<any> {
+        const names = await this.request({params});
+        commit('setName', names);
+    }
 
->
+    //该方法只是为了不让ts提示没this.request报错
+    private request(params: any) {}
+}
+
+//通过继承VuexModuleClass 来生成一个vuex模块
+@VuexModule({name: 'User'})
+class UserModule extends VuexModuleClass {
+   constructor() {
+        super("Order");
+        //必须调用父类的generate方法 并且传入this
+        super.generate(this);
+    }
+    //other...
+}
+
+//导出实例
+export const Order: VuexModule = new OrderModule();
+
+```
