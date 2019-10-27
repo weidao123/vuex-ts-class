@@ -63,16 +63,12 @@ export class UserModule {
 }
 
 //通过继承VuexModuleClass 来生成一个vuex模块
-class UserModule extends VuexModuleClass {
+export class Order extends VuexModuleClass {
    constructor() {
-        super("Order");
+        super();
         //必须调用父类的generate方法 并且传入this
         super.generate(this);
     }
     //other...
 }
-
-//导出实例
-export const Order: VuexModule = new OrderModule();
-
 ```

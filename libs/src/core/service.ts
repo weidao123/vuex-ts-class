@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex, {Store} from 'vuex';
-import {VuexModule, VuexStoreConfig} from "../../interface";
+import { VuexStoreConfig} from "../../interface";
 
 Vue.use(Vuex);
 
@@ -12,10 +12,14 @@ export class Service {
 
     private readonly vuexStoreConfig: VuexStoreConfig;
 
-    public registerModule(vuexModule: VuexModule): void {
+    public registerModule(VuexModule: any): void {
         if(!this.vuexStoreConfig.modules) this.vuexStoreConfig.modules = {};
-        //@ts-ignore
-        Object.assign(this.vuexStoreConfig.modules, vuexModule)
+        if(typeof VuexModule === 'function') {
+            const vuexModule: any = new VuexModule();
+            Object.assign(this.vuexStoreConfig.modules, vuexModule);
+        } else {
+            Object.assign(this.vuexStoreConfig.modules, VuexModule);
+        }
     }
 
     public createStore(): Store<any> {

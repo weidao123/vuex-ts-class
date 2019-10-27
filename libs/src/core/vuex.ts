@@ -6,14 +6,13 @@ type VuexModuleOptions = "actions" | "mutations" | "state" | "getters";
 
 export class VuexModuleClass {
 
-    constructor(name: string, namespace: boolean = true, strict: boolean = true) {
-        if (!name) throw new Error("Module name must be passed in");
+    constructor(name: string | null = null, namespace: boolean = true, strict: boolean = true) {
         this._name = name;
         this._namespace = namespace;
         this._strict = strict;
     }
 
-    private readonly _name: string;
+    private readonly _name: string | null;
 
     private readonly _namespace: boolean;
 
@@ -46,7 +45,8 @@ export class VuexModuleClass {
             }
         });
 
-        target[this._name] = {
+        const moduleName: string = this._name || target.__proto__.constructor.name;
+        target[moduleName] = {
             actions,
             mutations,
             state,
