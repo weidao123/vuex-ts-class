@@ -13,7 +13,7 @@
 >### 使用:
 * `yarn add vuex-ts-class`
 
-* `import {Service, RequestContext} from 'yarn add vuex-ts-class'`
+* `import {Service, RequestContext} from 'vuex-ts-class'`
 
     ```typescript
   const service = new Service({
