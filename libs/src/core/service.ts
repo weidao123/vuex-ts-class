@@ -1,22 +1,30 @@
 import Vue from 'vue';
 import Vuex, {Store} from 'vuex';
-import { VuexStoreConfig} from "../../interface";
+import {ServiceInter, VuexStoreConfig} from "../../interface";
+import {VuexModuleClass} from "./vuex";
 
 Vue.use(Vuex);
 
-export class Service {
+export class Service implements ServiceInter{
 
     constructor(vuexStoreConfig: VuexStoreConfig = {}) {
         this.vuexStoreConfig = vuexStoreConfig || {};
     }
 
-    private readonly vuexStoreConfig: VuexStoreConfig;
+    public readonly vuexStoreConfig: VuexStoreConfig;
 
     public registerModule(VuexModule: any): void {
         if(!this.vuexStoreConfig.modules) this.vuexStoreConfig.modules = {};
         if(typeof VuexModule === 'function') {
             const vuexModule: any = new VuexModule();
-            Object.assign(this.vuexStoreConfig.modules, vuexModule);
+
+            //判断是否继承了 VuexModuleClass
+            if(vuexModule instanceof VuexModuleClass) {
+                Object.assign(this.vuexStoreConfig.modules, vuexModule);
+            } else {
+                let errMsg = "Error registering module: module must inherit VuexModuleClass or decorate with @VuexModule";
+                throw new Error(errMsg)
+            }
         } else {
             Object.assign(this.vuexStoreConfig.modules, VuexModule);
         }

@@ -1,5 +1,5 @@
 import {Actions, Getters, Mutations, State} from "./Options";
-import {ActionTree, GetterTree, ModuleTree, MutationTree, Plugin} from "vuex";
+import {ActionTree, GetterTree, ModuleTree, MutationTree, Plugin, Store} from "vuex";
 
 export interface VuexModule {
     [name: string]: VuexModuleOptions
@@ -32,4 +32,13 @@ export interface VuexStoreConfig{
     modules?: {[key: string]: VuexModule};
     plugins?: any;
     strict?: boolean;
+}
+
+export interface ServiceInter {
+
+    readonly vuexStoreConfig: VuexStoreConfig
+
+    registerModule(vuexModule: any): void
+
+    createStore(): Store<any>
 }
