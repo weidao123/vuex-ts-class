@@ -2,7 +2,6 @@
 >### 简介：
  * vuex-ts-class 是对Vuex的一层包装，使用Class类的写法来使用Vuex
  * vuex-ts-class 拥有更好的开发体验，模块化更加的清晰
- * 建议把 vuex-ts-class 当成一个service层来使用
  * 内置封装了 request 方法， 基于 XMLHttpRequest
  * 对外提供了 RequestContext 来做一些全局的配置
  *      例如： 
@@ -13,7 +12,7 @@
 >### 使用:
 * `yarn add vuex-ts-class`
 
-* `import {Service, RequestContext} from 'yarn add vuex-ts-class'`
+* `import {Service, RequestContext} from 'vuex-ts-class'`
 
     ```typescript
   const service = new Service({
