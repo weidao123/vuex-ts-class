@@ -27,7 +27,7 @@ import {Service, RequestContext} from 'vuex-ts-class'
 
 #### 模块:
 ```typescript
-import {MutationMethod, VuexModule, ActionMethod, Request, VuexModuleClass, request} from 'vuex-ts-class'; import {RequestParams} from "./Request";
+import {MutationMethod, VuexModule, ActionMethod, Request, VuexModuleClass, request} from 'vuex-ts-class';
 
 //使用VuexModule装饰器来生成一个vuex模块 (PS: 这里一定要指明模块名称，不然上生产环境会出问题)
 @VuexModule({name: 'User'})
