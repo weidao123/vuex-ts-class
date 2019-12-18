@@ -27,7 +27,7 @@ import {Service, RequestContext} from 'vuex-ts-class'
 
 #### 模块:
 ```typescript
-import {MutationMethod, VuexModule, ActionMethod, Request, VuexModuleClass} from 'vuex-ts-class';
+import {MutationMethod, VuexModule, ActionMethod, Request, VuexModuleClass, request} from 'vuex-ts-class'; import {RequestParams} from "./Request";
 
 //使用VuexModule装饰器来生成一个vuex模块 (PS: 这里一定要指明模块名称，不然上生产环境会出问题)
 @VuexModule({name: 'User'})
@@ -46,6 +46,13 @@ export class UserModule {
         const names = await this.request({params});
         commit('setName', names);
     }
+
+    @ActionMethod
+    public async getAge({commit}: any): Promise<any> {
+        const config: RequestParams = {};
+        const names = await request(config);
+    }
+
 
     //该方法只是为了不让ts提示没this.request报错
     private request(params: any) {}
