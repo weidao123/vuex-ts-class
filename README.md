@@ -1,14 +1,13 @@
 
-* ### 简介：
- * vuex-ts-class 是对Vuex的一层包装，使用TypeScript的语法来编写Vuex，使得开发大型应用能更好的提高代码的健壮性
- * 内置封装了基于 XMLHttpRequest 的 request 方法，并且对外提供了一些全局参数以及生命周期的设置方法 RequestContext
+### 简介：
+* vuex-ts-class 是对Vuex的一层包装，使用TypeScript的语法来编写Vuex，使得开发大型应用能更好的提高代码的健壮性
+* 内置封装了基于 XMLHttpRequest 的 request 方法，并且对外提供了一些全局参数以及生命周期的设置方法 RequestContext
                 
-* ### 使用:
+ ### 使用:
 * `yarn add vuex-ts-class`
 
-* `import {Service, RequestContext} from 'vuex-ts-class'`
-
-    ```typescript
+```typescript
+import {Service, RequestContext} from 'vuex-ts-class'
   const service = new Service({
       state: {},
       actions: {},
@@ -24,8 +23,9 @@
   
   //导出vuex的实例
   export default service.createStore();
+ ```
 
->#### 模块：:
+#### 模块:
 ```typescript
 import {MutationMethod, VuexModule, ActionMethod, Request, VuexModuleClass} from 'vuex-ts-class';
 
