@@ -11,6 +11,8 @@ import {requestContext as RequestContext} from "./src/context/RequestContext";
 import {Request} from "./src/core/decorator";
 import {RequestMethod} from "./enum/Request";
 import {VuexModuleClass} from "./src/core/vuex";
+import {request} from "./src/utils";
+import {RequestOptions} from "./interface/Request";
 
 export {
     VuexModule,
@@ -23,7 +25,9 @@ export {
     RequestContext,
     Request,
     RequestMethod,
-    VuexModuleClass
+    VuexModuleClass,
+    request,
+    RequestOptions
 }
 
 export default Service;

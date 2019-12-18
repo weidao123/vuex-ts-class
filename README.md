@@ -1,31 +1,21 @@
 
->### 简介：
- * vuex-ts-class 是对Vuex的一层包装，使用Class类的写法来使用Vuex
- * vuex-ts-class 拥有更好的开发体验，模块化更加的清晰
- * 内置封装了 request 方法， 基于 XMLHttpRequest
- * 对外提供了 RequestContext 来做一些全局的配置
- *      例如： 
-            请求头部: RequestContext.setRequestHeaders
-            全局的参数: RequestContext.setGlobalParams
-            以及一些相关的生命周期方法等等
+* ### 简介：
+ * vuex-ts-class 是对Vuex的一层包装，使用TypeScript的语法来编写Vuex，使得开发大型应用能更好的提高代码的健壮性
+ * 内置封装了基于 XMLHttpRequest 的 request 方法，并且对外提供了一些全局参数以及生命周期的设置方法 RequestContext
                 
->### 使用:
+* ### 使用:
 * `yarn add vuex-ts-class`
 
 * `import {Service, RequestContext} from 'vuex-ts-class'`
 
     ```typescript
   const service = new Service({
-      state: {count: 40},
-      actions: {
-          ...MainAction
-      },
-      mutations: {
-          ...MainMutations
-      }
+      state: {},
+      actions: {},
+      mutations: {}
   });
   
-  //设置全局请求头部
+  //全局设置全局请求头部
   RequestContext.setRequestHeaders({"Content-Type": "application/json;charset=UTF-8"});
   
   //注册一个模块
@@ -39,7 +29,7 @@
 ```typescript
 import {MutationMethod, VuexModule, ActionMethod, Request, VuexModuleClass} from 'vuex-ts-class';
 
-//使用VuexModule装饰器来生成一个vuex模块
+//使用VuexModule装饰器来生成一个vuex模块 (PS: 这里一定要指明模块名称，不然上生产环境会出问题)
 @VuexModule({name: 'User'})
 export class UserModule {
 
@@ -66,7 +56,8 @@ export class Order extends VuexModuleClass {
    constructor() {
         super();
         //必须调用父类的generate方法 并且传入this
-        super.generate(this);
+        //(PS: 这里一定要指明模块名称，不然上生产环境会出问题)
+        super.generate(this, "ModuleName");
     }
     //other...
 }

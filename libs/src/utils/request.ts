@@ -169,8 +169,8 @@ export class HttpService extends XMLHttp implements RequestParamsConfig {
  * @param requestParams 装饰器的初使参数
  * @param body 请求题
  */
-export async function request(requestParams: RequestOptions, body: any) {
-    requestParams.body = body;
+export async function request(requestParams: RequestOptions, body?: any) {
+    requestParams.body = body || {};
     const httpService = new HttpService(requestParams);
     return await httpService.request();
 }
