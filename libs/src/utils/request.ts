@@ -23,7 +23,7 @@ class XMLHttp implements XMLHttpRequestInterface {
      * @param timeout
      * @param header
      */
-    public async initXMLHttp(url: string, method: RequestMethodType, body: any, timeout: number | undefined, header: Header | undefined): Promise<Response> {
+    public async initXMLHttp<T>(url: string, method: RequestMethodType, body: any, timeout: number | undefined, header: Header | undefined): Promise<T> {
 
         if (XMLHttpRequest) {
             this.xhr = new XMLHttpRequest();
@@ -138,7 +138,7 @@ class XMLHttp implements XMLHttpRequestInterface {
  * 外部可传入的参数配置
  * 其他的参数待配置
  */
-export class HttpService extends XMLHttp implements RequestParamsConfig {
+export class HttpService<T> extends XMLHttp implements RequestParamsConfig {
 
     constructor(requestOptions: RequestOptions) {
         super();
@@ -159,8 +159,8 @@ export class HttpService extends XMLHttp implements RequestParamsConfig {
 
     public readonly header: Header | undefined;
 
-    public async request(): Promise<Response> {
-        return await this.initXMLHttp(this.url, this.method, this.body, this.timeout, this.header);
+    public async request<T>(): Promise<T> {
+        return await this.initXMLHttp<T>(this.url, this.method, this.body, this.timeout, this.header);
     }
 }
 
@@ -169,8 +169,8 @@ export class HttpService extends XMLHttp implements RequestParamsConfig {
  * @param requestParams 装饰器的初使参数
  * @param body 请求题
  */
-export async function request(requestParams: RequestOptions, body?: any) {
+export async function request<T = Response>(requestParams: RequestOptions, body?: any): Promise<T> {
     requestParams.body = body || {};
-    const httpService = new HttpService(requestParams);
+    const httpService = new HttpService<Response>(requestParams);
     return await httpService.request();
 }
