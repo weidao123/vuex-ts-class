@@ -170,7 +170,7 @@ export class HttpService<T> extends XMLHttp implements RequestParamsConfig {
  * @param body 请求题
  */
 export async function request<T = Response>(requestParams: RequestOptions, body?: any): Promise<T> {
-    requestParams.body = body || {};
+    requestParams.body = Object.assign(requestParams.body, body);
     const httpService = new HttpService<Response>(requestParams);
     return await httpService.request();
 }
