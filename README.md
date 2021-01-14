@@ -1,5 +1,5 @@
 ### 推荐使用这个
- (vuex-annotation)[https://github.com/weidao123/vuex-annotation]
+ [vuex-annotation](https://github.com/weidao123/vuex-annotation)
  * 这个更加的简洁 使用更方便
 ### 简介：
 * vuex-ts-class 是对Vuex的一层包装，使用TypeScript的语法来编写Vuex，使得开发大型应用能更好的提高代码的健壮性
